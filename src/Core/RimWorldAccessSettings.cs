@@ -67,6 +67,10 @@ namespace RimWorldAccess
         public bool FootstepZoomScaling = true;
         public bool FootstepPerformanceMode = false;
 
+        // ----- Map navigation jump settings -----
+        public int SavedMapJumpMode = (int)JumpMode.PresetDistance;
+        public int SavedPresetJumpDistance = 5;
+
         public override void ExposeData()
         {
             Scribe_Values.Look(ref WrapNavigation, "WrapNavigation", false);
@@ -84,6 +88,15 @@ namespace RimWorldAccess
             Scribe_Values.Look(ref FootstepStereoPan, "FootstepStereoPan", true);
             Scribe_Values.Look(ref FootstepZoomScaling, "FootstepZoomScaling", true);
             Scribe_Values.Look(ref FootstepPerformanceMode, "FootstepPerformanceMode", false);
+            Scribe_Values.Look(ref SavedMapJumpMode, "SavedMapJumpMode", (int)JumpMode.PresetDistance);
+            Scribe_Values.Look(ref SavedPresetJumpDistance, "SavedPresetJumpDistance", 5);
+
+            // Clamp persisted values to safe ranges in case of old/corrupt settings.
+            if (!System.Enum.IsDefined(typeof(JumpMode), SavedMapJumpMode))
+                SavedMapJumpMode = (int)JumpMode.PresetDistance;
+            if (SavedPresetJumpDistance < 1)
+                SavedPresetJumpDistance = 1;
+
             base.ExposeData();
         }
     }
@@ -99,6 +112,7 @@ namespace RimWorldAccess
         public RimWorldAccessMod_Settings(ModContentPack content) : base(content)
         {
             Settings = GetSettings<RimWorldAccessSettings>();
+            MapNavigationState.ApplySavedJumpSettings();
             Log.Message("[RimWorld Access] Settings loaded.");
             FootstepSoundBank.Reset();
         }

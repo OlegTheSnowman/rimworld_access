@@ -180,6 +180,38 @@ namespace RimWorldAccess
         public static JumpMode CurrentJumpMode => currentJumpMode;
 
         /// <summary>
+        /// Loads persisted jump mode and distance from mod settings.
+        /// Safe to call before map initialization.
+        /// </summary>
+        public static void ApplySavedJumpSettings()
+        {
+            var settings = RimWorldAccessMod_Settings.Settings;
+            if (settings == null)
+                return;
+
+            if (System.Enum.IsDefined(typeof(JumpMode), settings.SavedMapJumpMode))
+                currentJumpMode = (JumpMode)settings.SavedMapJumpMode;
+            else
+                currentJumpMode = JumpMode.PresetDistance;
+
+            presetJumpDistance = System.Math.Max(1, settings.SavedPresetJumpDistance);
+        }
+
+        /// <summary>
+        /// Persists current jump mode and distance to mod settings.
+        /// </summary>
+        private static void SaveJumpSettings()
+        {
+            var settings = RimWorldAccessMod_Settings.Settings;
+            if (settings == null)
+                return;
+
+            settings.SavedMapJumpMode = (int)currentJumpMode;
+            settings.SavedPresetJumpDistance = System.Math.Max(1, presetJumpDistance);
+            RimWorldAccessMod_Settings.Settings.Write();
+        }
+
+        /// <summary>
         /// Gets the current preset jump distance in tiles.
         /// </summary>
         public static int PresetJumpDistance => presetJumpDistance;
@@ -202,6 +234,7 @@ namespace RimWorldAccess
         {
             int modeCount = Enum.GetValues(typeof(JumpMode)).Length;
             currentJumpMode = (JumpMode)(((int)currentJumpMode + 1) % modeCount);
+            SaveJumpSettings();
             AnnounceJumpMode();
         }
 
@@ -212,6 +245,7 @@ namespace RimWorldAccess
         {
             int modeCount = Enum.GetValues(typeof(JumpMode)).Length;
             currentJumpMode = (JumpMode)(((int)currentJumpMode + modeCount - 1) % modeCount);
+            SaveJumpSettings();
             AnnounceJumpMode();
         }
 
@@ -221,6 +255,7 @@ namespace RimWorldAccess
         public static void IncreasePresetDistance(int amount = 1)
         {
             presetJumpDistance += amount;
+            SaveJumpSettings();
             TolkHelper.Speak($"Jump distance: {presetJumpDistance}");
         }
 
@@ -232,6 +267,7 @@ namespace RimWorldAccess
             if (presetJumpDistance > 1)
             {
                 presetJumpDistance = System.Math.Max(1, presetJumpDistance - amount);
+                SaveJumpSettings();
                 TolkHelper.Speak($"Jump distance: {presetJumpDistance}");
             }
             else

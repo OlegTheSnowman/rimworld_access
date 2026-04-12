@@ -8,6 +8,9 @@ Mod entry point and initialization. Applies all Harmony patches and sets up Tolk
 ### Entry Point (1 file)
 - **rimworld_access.cs** - Static class with `[StaticConstructorOnStartup]` attribute, initializes Harmony and TolkHelper
 
+### Settings (1 file)
+- **RimWorldAccessSettings.cs** - Persistent mod settings storage (navigation, announcements, sound options, saved map jump mode/distance)
+
 ### Utilities (1 file)
 - **ModLogger.cs** - Centralized logging utility for debug messages
 

@@ -24,7 +24,7 @@ Provides keyboard navigation for the map view, including cursor movement, scanne
 ## Key Architecture
 
 ### State Management
-MapNavigationState maintains an IntVec3 cursor position that persists across frames. Scanner maintains hierarchical category/subcategory position.
+MapNavigationState maintains an IntVec3 cursor position that persists across frames. Scanner maintains hierarchical category/subcategory position. Jump mode and preset jump distance are persisted in mod settings and restored on launch.
 
 ### Input Handling
 Arrow keys handled at Priority 9-10 in UnifiedKeyboardPatch. Scanner uses Page Up/Down (always available).

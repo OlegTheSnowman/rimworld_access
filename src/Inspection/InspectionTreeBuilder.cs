@@ -646,7 +646,7 @@ namespace RimWorldAccess
                     StorageSettingsMenuState.Open(settings);
                 }
             }
-            else if (category == "Shells" && building is Building_TurretGun turretGun)
+            else if ((category == "Shells" || category == "Ammunition") && building is Building_TurretGun turretGun)
             {
                 var shellComp = turretGun.gun?.TryGetComp<CompChangeableProjectile>();
                 if (shellComp != null)

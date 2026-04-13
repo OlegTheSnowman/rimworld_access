@@ -174,6 +174,7 @@ namespace RimWorldAccess
             { "Plant Selection", TabHandlerType.Action },
             { "Prisoner", TabHandlerType.Action },
             { "Fishing", TabHandlerType.Action },
+            { "Ammunition", TabHandlerType.Action },
 
             // Synthetic categories (not real tabs)
             { "Overview", TabHandlerType.RichNavigation },
@@ -327,6 +328,7 @@ namespace RimWorldAccess
                 case "ITab_Pawn_Guest": return "Guest";
                 case "ITab_Pawn_Visitor": return "Guest";
                 case "ITab_ContentsTransporter": return "Contents";
+                case "ITab_Shells": return "Shells";
                 default: return GetCategoryNameForTab(tab);
             }
         }

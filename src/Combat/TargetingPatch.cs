@@ -328,7 +328,14 @@ namespace RimWorldAccess
                         else
                         {
                             // Cell-only target (like mortar bombardment)
-                            successMessage = "Targeting location";
+                            if (targetingSource is Verb targetVerb && targetVerb.caster is Building_TurretGun turret)
+                            {
+                                successMessage = $"Targeting location with {turret.LabelShort}";
+                            }
+                            else
+                            {
+                                successMessage = "Targeting location";
+                            }
                         }
                     }
 
